@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="0">
+    <record id="list_recycle_bin" model="ir.ui.view">
+      <field name="name">Recycle Bin list View</field>
+      <field name="model">recycle.bin</field>
+      <field name="arch" type="xml">
+        <list string="Recycle Bin" decoration-success="state=='restored'" decoration-danger="state=='failed'">
+          <field name="deleted_at"/>
+          <field name="deleted_by"/>
+          <field name="model_id"/>
+          <field name="name"/>
+          <field name="company_id"/>
+          <field name="restored_at" optional="hide"/>
+          <field name="restored_by" optional="hide"/>
+          <field name="record_id" optional="hide"/>
+          <field name="restored_record_id" optional="hide"/>
+          <field name="state"/>
+        </list>
+      </field>
+    </record>
+    <record id="form_recycle_bin" model="ir.ui.view">
+      <field name="name">Recycle Bin Form View</field>
+      <field name="model">recycle.bin</field>
+      <field name="arch" type="xml">
+        <form string="Recycle Bin">
+          <header>
+            <button name="action_restore" string="Restore" invisible="state not in ['deleted', 'failed']"
+                    type="object"
+                    confirm="Are you sure to restore this data?"/>
+            <button name="action_advance_restore" string="Advanced Restore"
+                    invisible="state not in ['deleted', 'failed', 'restored']" type="object"
+                    groups="base.group_no_one"/>
+            <field name="state" widget="statusbar" statusbar_visible="deleted,restored"/>
+          </header>
+          <sheet>
+            <div class="oe_button_box" name="button_box" invisible="state not in ['restored',]">
+              <button name="action_view_restored_record" type="object" class="oe_stat_button" icon="fa-list-alt icon">
+                <div class="o_field_widget o_stat_info">
+                  <span class="o_stat_text">Restored</span>
+                  <span class="o_stat_text">Record</span>
+                </div>
+              </button>
+            </div>
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only"/>
+              <h1>
+                <field name="name"/>
+              </h1>
+            </div>
+            <group>
+              <group string="Deleted Data Informations">
+                <field name="model_id"/>
+                <field name="record_id"/>
+                <field name="deleted_at"/>
+                <field name="deleted_by"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="trash_screenshot" invisible="1"/>
+              </group>
+              <group invisible="state != 'restored'" string="Restored Informations">
+                <field name="restored_at"/>
+                <field name="restored_by"/>
+                <field name="restored_record_id"/>
+              </group>
+            </group>
+            <notebook>
+              <page string="Screenshot" invisible="not trash_screenshot">
+                <field name="screenshot" widget="image" nolabel="1"/>
+              </page>
+              <page string="Data in JSON">
+                <field name="data_json" nolabel="1"/>
+              </page>
+              <page string="Raw Data in JSON" groups="base.group_no_one">
+                <field name="raw_data_json" nolabel="1"/>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+  </data>
+</odoo>

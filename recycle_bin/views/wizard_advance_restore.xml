@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="0">
+    <record id="form_wizard_advance_restore" model="ir.ui.view">
+      <field name="name">Wizard Advance Restore Form View</field>
+      <field name="model">wizard.advance.restore</field>
+      <field name="arch" type="xml">
+        <form string="Advanced Restore">
+          <div class="alert alert-warning">
+            <i class="fa fa-warning mr-1"/>
+            This is an advanced feature to restore data from raw json deleted data
+          </div>
+          <group>
+            <field name="recycle_id" readonly="1" force_save="1"/>
+            <field name="raw_data_json"/>
+          </group>
+          <footer>
+            <button name="action_confirm" type="object" string="Restore" class="btn-primary"/>
+            <button string="Cancel" class="btn-secondary" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+  </data>
+</odoo>

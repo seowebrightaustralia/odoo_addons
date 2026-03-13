@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="0">
+    <record id="recycle_bin.form_res_config_settings" model="ir.ui.view">
+      <field name="name">Res Config Settings Form View</field>
+      <field name="model">res.config.settings</field>
+      <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//block[@id='user_default_rights']" position="after">
+          <h2>Recycle Bin</h2>
+          <div class="row mt16 o_settings_container" name="recycle-bin">
+            <div class="col-12 col-lg-6 o_setting_box">
+              <div class="o_setting_left_pane"/>
+              <div class="o_setting_right_pane">
+                <span class="o_form_label">Keep Trash Duration</span>
+                <div class="text-muted">
+                  Keep trash or deleted record info in recycle bin for last
+                </div>
+                <div class="content-group">
+                  <div class="row mt16 ml-0">
+                    <field name="trash_duration" class="col-lg-2 text-right" style="margin-right: 5px;"/>
+                    <field name="trash_duration_uom" class="col-lg-3"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 o_setting_box">
+              <div class="o_setting_left_pane">
+                <field name="trash_screenshot"/>
+              </div>
+              <div class="o_setting_right_pane">
+                <label string="Save Screenshot" for="trash_screenshot"/>
+                <div class="text-muted">
+                  Save screenshot of deleted record process
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-12 o_setting_box">
+              <div class="o_setting_left_pane"/>
+              <div class="o_setting_right_pane">
+                <span class="o_form_label">Enable Trash for Models</span>
+                <div class="text-muted">
+                  Use this section to configure which models you need to enable recycle bin
+                </div>
+                <div class="content-group">
+                  <div class="row mt16 ml-0">
+                    <field name="trash_filter_mode" class="col-lg-2" style="margin-right: 5px;"/>
+                    <field name="trash_model_ids" class="col-lg-10" placeholder="This is list of models"
+                           widget="many2many_tags"
+                           invisible="trash_filter_mode != 'whitelist'" required="trash_filter_mode == 'whitelist'"/>
+                    <field name="trash_model_ids" class="col-lg-10" placeholder="This is list of models"
+                           widget="many2many_tags"
+                           invisible="trash_filter_mode != 'blacklist'" required="trash_filter_mode == 'blacklist'"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 o_setting_box">
+              <div class="o_setting_left_pane"/>
+              <div class="o_setting_right_pane">
+                <span class="o_form_label">Empty Recycle Bin Trash</span>
+                <div class="text-muted">
+                  Use this button to empty recycle bin trash for each company
+                </div>
+                <div class="content-group">
+                  <div class="row mt16 ml-0 mt-0">
+                    <button name="empty_trash" string="Empty Trash" type="object" class="btn-danger"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

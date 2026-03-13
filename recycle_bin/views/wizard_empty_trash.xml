@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="0">
+    <record id="form_wizard_empty_trash" model="ir.ui.view">
+      <field name="name">Wizard Empty Trash Form View</field>
+      <field name="model">wizard.empty.trash</field>
+      <field name="arch" type="xml">
+        <form string="Wizard Empty Trash">
+          <group>
+            <div class="alert alert-danger">
+              <i class="fa fa-warning mr-1"/>
+              Are you sure to empty recycle bin trash for
+                <a class="alert-link font-weight-bold" role="button">
+                  <field name="company_id" readonly="True"/>
+                </a>
+              ?
+            </div>
+          </group>
+          <footer>
+            <button name="action_confirm" type="object" string="Confirm" class="btn-primary"/>
+            <button string="Cancel" class="btn-secondary" special="cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+  </data>
+</odoo>

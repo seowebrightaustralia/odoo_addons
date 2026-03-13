@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_recycle_bin_administrator,Recycle Bin Access for Administrator,recycle_bin.model_recycle_bin,base.group_system,1,0,0,0
+access_empty_trash_wizard_global,Empty Trash Wizard Access for Global,recycle_bin.model_wizard_empty_trash,,1,1,1,1
+access_wizard_advance_restore_global,WIzard Advance Restore Access for Global,recycle_bin.model_wizard_advance_restore,,1,1,1,1
+access_recycle_bin_manager,Recycle Bin Access for Manager,recycle_bin.model_recycle_bin,recycle_bin.group_manage_recycle_bin,1,0,0,0
