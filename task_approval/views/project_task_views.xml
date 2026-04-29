@@ -7,28 +7,25 @@
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='tag_ids']" position="after">
-                <field name="is_approved_task" invisible="1"/>
-                <field name="is_declined_task" invisible="1"/>
-                <field name="is_on_hold_task" invisible="1"/>
-                <field name="is_pending_task" invisible="1"/>
+                <field name="approval_status" invisible="1"/>
             </xpath>
 
             <xpath expr="//header" position="inside">
-                <button name="action_approve_task" string="Approve" type="object" class="btn-success" invisible="is_approved_task" groups="project.group_project_manager"/>
-                <button name="action_decline_task" string="Decline" type="object" class="btn-danger" invisible="is_declined_task" groups="project.group_project_manager"/>
-                <button name="action_on_hold_task" string="On Hold" type="object" class="btn-warning" invisible="is_on_hold_task" groups="project.group_project_manager"/>
-                <button name="action_reset_pending" string="Reset to Pending" type="object" invisible="is_pending_task" groups="project.group_project_manager"/>
+                <button name="action_approve_task" string="Approve" type="object" class="btn-success" invisible="approval_status == '2_approved'" groups="project.group_project_manager"/>
+                <button name="action_decline_task" string="Decline" type="object" class="btn-danger" invisible="approval_status == '3_declined'" groups="project.group_project_manager"/>
+                <button name="action_on_hold_task" string="On Hold" type="object" class="btn-warning" invisible="approval_status == '4_on_hold'" groups="project.group_project_manager"/>
+                <button name="action_reset_pending" string="Reset to Pending" type="object" invisible="approval_status == '1_pending'" groups="project.group_project_manager"/>
             </xpath>
             
             <xpath expr="//div[hasclass('oe_title')]" position="before">
                 <div class="mb-2">
-                    <span class="badge rounded-pill text-bg-success fs-6 py-2 px-3" invisible="not is_approved_task">
+                    <span class="badge rounded-pill text-bg-success fs-6 py-2 px-3" invisible="approval_status != '2_approved'">
                         <i class="fa fa-check me-1"/> Approved
                     </span>
-                    <span class="badge rounded-pill text-bg-danger fs-6 py-2 px-3" invisible="not is_declined_task">
+                    <span class="badge rounded-pill text-bg-danger fs-6 py-2 px-3" invisible="approval_status != '3_declined'">
                         <i class="fa fa-times me-1"/> Declined
                     </span>
-                    <span class="badge rounded-pill text-bg-warning fs-6 py-2 px-3" invisible="not is_on_hold_task">
+                    <span class="badge rounded-pill text-bg-warning fs-6 py-2 px-3" invisible="approval_status != '4_on_hold'">
                         <i class="fa fa-pause me-1"/> On Hold
                     </span>
                 </div>
@@ -42,20 +39,18 @@
         <field name="inherit_id" ref="project.view_task_kanban"/>
         <field name="arch" type="xml">
             <xpath expr="//templates" position="before">
-                <field name="is_approved_task"/>
-                <field name="is_declined_task"/>
-                <field name="is_on_hold_task"/>
+                <field name="approval_status"/>
             </xpath>
             
             <xpath expr="//templates//field[@name='tag_ids']" position="after">
                 <div class="d-flex mt-2 mb-1">
-                    <button name="action_approve_task" type="object" class="btn btn-sm btn-outline-success me-1 p-1" invisible="is_approved_task" groups="project.group_project_manager" title="Approve">
+                    <button name="action_approve_task" type="object" class="btn btn-sm btn-outline-success me-1 p-1" invisible="approval_status == '2_approved'" groups="project.group_project_manager" title="Approve">
                         <i class="fa fa-check"/>
                     </button>
-                    <button name="action_decline_task" type="object" class="btn btn-sm btn-outline-danger me-1 p-1" invisible="is_declined_task" groups="project.group_project_manager" title="Decline">
+                    <button name="action_decline_task" type="object" class="btn btn-sm btn-outline-danger me-1 p-1" invisible="approval_status == '3_declined'" groups="project.group_project_manager" title="Decline">
                         <i class="fa fa-times"/>
                     </button>
-                    <button name="action_on_hold_task" type="object" class="btn btn-sm btn-outline-warning p-1" invisible="is_on_hold_task" groups="project.group_project_manager" title="On Hold">
+                    <button name="action_on_hold_task" type="object" class="btn btn-sm btn-outline-warning p-1" invisible="approval_status == '4_on_hold'" groups="project.group_project_manager" title="On Hold">
                         <i class="fa fa-pause"/>
                     </button>
                 </div>
@@ -76,7 +71,7 @@
                 <separator/>
             </xpath>
             <xpath expr="//filter[@name='stage']" position="after">
-                <filter string="Tags (Approval Status)" name="group_by_tags" context="{'group_by': 'tag_ids'}"/>
+                <filter string="Approval Status" name="group_by_approval_status" context="{'group_by': 'approval_status'}"/>
                 <filter string="Creation Month" name="group_by_month" context="{'group_by': 'create_date:month'}"/>
             </xpath>
         </field>
@@ -88,7 +83,7 @@
         <field name="view_mode">kanban,list,form</field>
         <field name="context">{
             'search_default_filter_open_tasks': 1,
-            'search_default_group_by_tags': 1
+            'group_by': 'approval_status'
         }</field>
     </record>
 
