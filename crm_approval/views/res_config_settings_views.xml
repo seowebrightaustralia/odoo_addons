@@ -1,96 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <record id="view_crm_lead_form_inherited_approval" model="ir.ui.view">
-        <field name="name">crm.lead.form.inherited.approval</field>
-        <field name="model">crm.lead</field>
-        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+    <record id="res_config_settings_view_form_crm_approvals" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.crm.approvals</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="crm.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='tag_ids']" position="after">
-                <field name="approval_status" invisible="1"/>
-            </xpath>
-
-            <xpath expr="//header" position="inside">
-                <button name="action_approve_lead" string="Approve" type="object" class="btn-success" invisible="approval_status == '2_approved'" groups="sales_team.group_sale_manager"/>
-                <button name="action_decline_lead" string="Decline" type="object" class="btn-danger" invisible="approval_status == '3_declined'" groups="sales_team.group_sale_manager"/>
-                <button name="action_on_hold_lead" string="On Hold" type="object" class="btn-warning" invisible="approval_status == '4_on_hold'" groups="sales_team.group_sale_manager"/>
-                <button name="action_reset_pending" string="Reset to Pending" type="object" invisible="approval_status == '1_pending'" groups="sales_team.group_sale_manager"/>
-            </xpath>
-            
-            <xpath expr="//div[hasclass('oe_title')]" position="before">
-                <div class="mb-2">
-                    <span class="badge rounded-pill text-bg-success fs-6 py-2 px-3" invisible="approval_status != '2_approved'">
-                        <i class="fa fa-check me-1"/> Approved
-                    </span>
-                    <span class="badge rounded-pill text-bg-danger fs-6 py-2 px-3" invisible="approval_status != '3_declined'">
-                        <i class="fa fa-times me-1"/> Declined
-                    </span>
-                    <span class="badge rounded-pill text-bg-warning fs-6 py-2 px-3" invisible="approval_status != '4_on_hold'">
-                        <i class="fa fa-pause me-1"/> On Hold
-                    </span>
-                </div>
+            <xpath expr="//app[@name='crm']" position="inside">
+                <block title="Lead/Opportunity Approvals" name="crm_approvals_setting_container">
+                    <setting help="Select the tags used for the CRM approval workflow.">
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label for="crm_pending_tag_id" class="col-lg-3 o_light_label" string="Pending Tag"/>
+                                <field name="crm_pending_tag_id"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="crm_approved_tag_id" class="col-lg-3 o_light_label" string="Approved Tag"/>
+                                <field name="crm_approved_tag_id"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="crm_declined_tag_id" class="col-lg-3 o_light_label" string="Declined Tag"/>
+                                <field name="crm_declined_tag_id"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="crm_on_hold_tag_id" class="col-lg-3 o_light_label" string="On-Hold Tag"/>
+                                <field name="crm_on_hold_tag_id"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
             </xpath>
         </field>
     </record>
-
-    <record id="view_crm_lead_kanban_inherited_approval" model="ir.ui.view">
-        <field name="name">crm.lead.kanban.inherited.approval</field>
-        <field name="model">crm.lead</field>
-        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
-        <field name="arch" type="xml">
-            <xpath expr="//templates" position="before">
-                <field name="approval_status"/>
-            </xpath>
-            
-            <xpath expr="//templates//field[@name='tag_ids']" position="after">
-                <div class="d-flex mt-2 mb-1">
-                    <button name="action_approve_lead" type="object" class="btn btn-sm btn-outline-success me-1 p-1" invisible="approval_status == '2_approved'" groups="sales_team.group_sale_manager" title="Approve">
-                        <i class="fa fa-check"/>
-                    </button>
-                    <button name="action_decline_lead" type="object" class="btn btn-sm btn-outline-danger me-1 p-1" invisible="approval_status == '3_declined'" groups="sales_team.group_sale_manager" title="Decline">
-                        <i class="fa fa-times"/>
-                    </button>
-                    <button name="action_on_hold_lead" type="object" class="btn btn-sm btn-outline-warning p-1" invisible="approval_status == '4_on_hold'" groups="sales_team.group_sale_manager" title="On Hold">
-                        <i class="fa fa-pause"/>
-                    </button>
-                </div>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="view_crm_lead_search_inherited_approval" model="ir.ui.view">
-        <field name="name">crm.lead.search.inherited.approval</field>
-        <field name="model">crm.lead</field>
-        <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
-        <field name="arch" type="xml">
-            <xpath expr="//filter[@name='assigned_to_me']" position="before">
-                <filter string="Active Leads Only" name="filter_active_leads" domain="[('active', '=', True)]"/>
-                <separator/>
-                <filter string="Last 7 Days" name="filter_last_7_days" domain="[('create_date', '&gt;=', (context_today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
-                <filter string="Last Week" name="filter_last_week" domain="[('create_date', '&gt;=', (context_today() - relativedelta(weeks=1)).strftime('%Y-%m-%d'))]"/>
-                <separator/>
-            </xpath>
-            <xpath expr="//filter[@name='stage']" position="after">
-                <filter string="Approval Status" name="group_by_approval_status" context="{'group_by': 'approval_status'}"/>
-                <filter string="Creation Month" name="group_by_month" context="{'group_by': 'create_date:month'}"/>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="action_crm_lead_approvals" model="ir.actions.act_window">
-        <field name="name">CRM Approvals</field>
-        <field name="res_model">crm.lead</field>
-        <field name="view_mode">kanban,list,form</field>
-        <field name="context">{
-            'search_default_filter_active_leads': 1,
-            'group_by': 'approval_status'
-        }</field>
-    </record>
-
-    <menuitem id="menu_crm_lead_approvals" 
-              name="CRM Approvals" 
-              action="action_crm_lead_approvals" 
-              web_icon="crm,static/description/icon.png"
-              sequence="16"/>
-
 </odoo>
