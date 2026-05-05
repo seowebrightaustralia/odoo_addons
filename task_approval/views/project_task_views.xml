@@ -7,25 +7,28 @@
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='tag_ids']" position="after">
-                <field name="approval_status" invisible="1"/>
+                <field name="is_approved_task" invisible="1"/>
+                <field name="is_declined_task" invisible="1"/>
+                <field name="is_on_hold_task" invisible="1"/>
+                <field name="is_pending_task" invisible="1"/>
             </xpath>
 
             <xpath expr="//header" position="inside">
-                <button name="action_approve_task" string="Approve" type="object" class="btn-success" invisible="approval_status == '2_approved'" groups="project.group_project_manager"/>
-                <button name="action_decline_task" string="Decline" type="object" class="btn-danger" invisible="approval_status == '3_declined'" groups="project.group_project_manager"/>
-                <button name="action_on_hold_task" string="On Hold" type="object" class="btn-warning" invisible="approval_status == '4_on_hold'" groups="project.group_project_manager"/>
-                <button name="action_reset_pending" string="Reset to Pending" type="object" invisible="approval_status == '1_pending'" groups="project.group_project_manager"/>
+                <button name="action_approve_task" string="Approve" type="object" class="btn-success" invisible="is_approved_task" groups="project.group_project_manager"/>
+                <button name="action_decline_task" string="Decline" type="object" class="btn-danger" invisible="is_declined_task" groups="project.group_project_manager"/>
+                <button name="action_on_hold_task" string="On Hold" type="object" class="btn-warning" invisible="is_on_hold_task" groups="project.group_project_manager"/>
+                <button name="action_reset_pending" string="Reset to Pending" type="object" invisible="is_pending_task" groups="project.group_project_manager"/>
             </xpath>
             
             <xpath expr="//div[hasclass('oe_title')]" position="before">
                 <div class="mb-2">
-                    <span class="badge rounded-pill text-bg-success fs-6 py-2 px-3" invisible="approval_status != '2_approved'">
+                    <span class="badge rounded-pill text-bg-success fs-6 py-2 px-3" invisible="not is_approved_task">
                         <i class="fa fa-check me-1"/> Approved
                     </span>
-                    <span class="badge rounded-pill text-bg-danger fs-6 py-2 px-3" invisible="approval_status != '3_declined'">
+                    <span class="badge rounded-pill text-bg-danger fs-6 py-2 px-3" invisible="not is_declined_task">
                         <i class="fa fa-times me-1"/> Declined
                     </span>
-                    <span class="badge rounded-pill text-bg-warning fs-6 py-2 px-3" invisible="approval_status != '4_on_hold'">
+                    <span class="badge rounded-pill text-bg-warning fs-6 py-2 px-3" invisible="not is_on_hold_task">
                         <i class="fa fa-pause me-1"/> On Hold
                     </span>
                 </div>
@@ -39,18 +42,20 @@
         <field name="inherit_id" ref="project.view_task_kanban"/>
         <field name="arch" type="xml">
             <xpath expr="//templates" position="before">
-                <field name="approval_status"/>
+                <field name="is_approved_task"/>
+                <field name="is_declined_task"/>
+                <field name="is_on_hold_task"/>
             </xpath>
             
             <xpath expr="//templates//field[@name='tag_ids']" position="after">
                 <div class="d-flex mt-2 mb-1">
-                    <button name="action_approve_task" type="object" class="btn btn-sm btn-outline-success me-1 p-1" invisible="approval_status == '2_approved'" groups="project.group_project_manager" title="Approve">
+                    <button name="action_approve_task" type="object" class="btn btn-sm btn-outline-success me-1 p-1" invisible="is_approved_task" groups="project.group_project_manager" title="Approve">
                         <i class="fa fa-check"/>
                     </button>
-                    <button name="action_decline_task" type="object" class="btn btn-sm btn-outline-danger me-1 p-1" invisible="approval_status == '3_declined'" groups="project.group_project_manager" title="Decline">
+                    <button name="action_decline_task" type="object" class="btn btn-sm btn-outline-danger me-1 p-1" invisible="is_declined_task" groups="project.group_project_manager" title="Decline">
                         <i class="fa fa-times"/>
                     </button>
-                    <button name="action_on_hold_task" type="object" class="btn btn-sm btn-outline-warning p-1" invisible="approval_status == '4_on_hold'" groups="project.group_project_manager" title="On Hold">
+                    <button name="action_on_hold_task" type="object" class="btn btn-sm btn-outline-warning p-1" invisible="is_on_hold_task" groups="project.group_project_manager" title="On Hold">
                         <i class="fa fa-pause"/>
                     </button>
                 </div>
@@ -66,12 +71,33 @@
             <xpath expr="//filter[@name='my_tasks']" position="before">
                 <filter string="Open Tasks Only" name="filter_open_tasks" domain="[('is_closed', '=', False)]"/>
                 <separator/>
-                <filter string="Last 7 Days" name="filter_last_7_days" domain="[('create_date', '&gt;=', (context_today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
-                <filter string="Last Week" name="filter_last_week" domain="[('create_date', '&gt;=', (context_today() - relativedelta(weeks=1)).strftime('%Y-%m-%d'))]"/>
+                
+                <filter string="Today" name="filter_today" domain="[('create_date', '&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')), ('create_date', '&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]"/>
+                <filter string="Yesterday" name="filter_yesterday" domain="[('create_date', '&gt;=', (context_today() - relativedelta(days=1)).strftime('%Y-%m-%d 00:00:00')), ('create_date', '&lt;=', (context_today() - relativedelta(days=1)).strftime('%Y-%m-%d 23:59:59'))]"/>
+                <separator/>
+                
+                <filter string="This Week" name="filter_this_week" domain="[
+                    ('create_date', '&gt;=', (context_today() + relativedelta(weeks=-1,days=1,weekday=0)).strftime('%Y-%m-%d 00:00:00')),
+                    ('create_date', '&lt;=', (context_today() + relativedelta(weekday=6)).strftime('%Y-%m-%d 23:59:59'))]"/>
+                <filter string="Last Week" name="filter_last_week" domain="[
+                    ('create_date', '&gt;=', (context_today() + relativedelta(weeks=-2,days=1,weekday=0)).strftime('%Y-%m-%d 00:00:00')),
+                    ('create_date', '&lt;=', (context_today() + relativedelta(weeks=-1,weekday=6)).strftime('%Y-%m-%d 23:59:59'))]"/>
+                <separator/>
+                
+                <filter string="This Month" name="filter_this_month" domain="[('create_date', '&gt;=', context_today().strftime('%Y-%m-01 00:00:00')), ('create_date', '&lt;=', (context_today() + relativedelta(months=1, day=1, days=-1)).strftime('%Y-%m-%d 23:59:59'))]"/>
+                <filter string="Last Month" name="filter_last_month" domain="[('create_date', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01 00:00:00')), ('create_date', '&lt;', context_today().strftime('%Y-%m-01 00:00:00'))]"/>
+                <filter string="Last 3 Months" name="filter_last_3_months" domain="[('create_date', '&gt;=', (context_today() - relativedelta(months=3)).strftime('%Y-%m-01 00:00:00'))]"/>
+                <separator/>
+                
+                <filter string="This Year" name="filter_this_year" domain="[('create_date', '&gt;=', context_today().strftime('%Y-01-01 00:00:00'))]"/>
+                <separator/>
+
+                <filter string="Dynamic Dates Generator (Years/Months)" name="filter_dynamic_dates" date="create_date"/>
                 <separator/>
             </xpath>
+
             <xpath expr="//filter[@name='stage']" position="after">
-                <filter string="Approval Status" name="group_by_approval_status" context="{'group_by': 'approval_status'}"/>
+                <filter string="Tags (Approval Status)" name="group_by_tags" context="{'group_by': 'tag_ids'}"/>
                 <filter string="Creation Month" name="group_by_month" context="{'group_by': 'create_date:month'}"/>
             </xpath>
         </field>
@@ -83,7 +109,7 @@
         <field name="view_mode">kanban,list,form</field>
         <field name="context">{
             'search_default_filter_open_tasks': 1,
-            'group_by': 'approval_status'
+            'search_default_group_by_tags': 1
         }</field>
     </record>
 
