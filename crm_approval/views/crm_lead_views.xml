@@ -66,8 +66,30 @@
             <xpath expr="//search" position="inside">
                 <separator/>
                 <filter string="Active Leads Only" name="filter_active_leads" domain="[('active', '=', True)]"/>
-                <filter string="Last 7 Days" name="filter_last_7_days" domain="[('create_date', '&gt;=', (context_today() - relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
-                <filter string="Last Week" name="filter_last_week" domain="[('create_date', '&gt;=', (context_today() - relativedelta(weeks=1)).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                
+                <filter string="Today" name="filter_today" domain="[('create_date', '&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')), ('create_date', '&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]"/>
+                <filter string="Yesterday" name="filter_yesterday" domain="[('create_date', '&gt;=', (context_today() - relativedelta(days=1)).strftime('%Y-%m-%d 00:00:00')), ('create_date', '&lt;=', (context_today() - relativedelta(days=1)).strftime('%Y-%m-%d 23:59:59'))]"/>
+                <separator/>
+                
+                <filter string="This Week" name="filter_this_week" domain="[
+                    ('create_date', '&gt;=', (context_today() + relativedelta(weeks=-1,days=1,weekday=0)).strftime('%Y-%m-%d 00:00:00')),
+                    ('create_date', '&lt;=', (context_today() + relativedelta(weekday=6)).strftime('%Y-%m-%d 23:59:59'))]"/>
+                <filter string="Last Week" name="filter_last_week" domain="[
+                    ('create_date', '&gt;=', (context_today() + relativedelta(weeks=-2,days=1,weekday=0)).strftime('%Y-%m-%d 00:00:00')),
+                    ('create_date', '&lt;=', (context_today() + relativedelta(weeks=-1,weekday=6)).strftime('%Y-%m-%d 23:59:59'))]"/>
+                <separator/>
+                
+                <filter string="This Month" name="filter_this_month" domain="[('create_date', '&gt;=', context_today().strftime('%Y-%m-01 00:00:00')), ('create_date', '&lt;=', (context_today() + relativedelta(months=1, day=1, days=-1)).strftime('%Y-%m-%d 23:59:59'))]"/>
+                <filter string="Last Month" name="filter_last_month" domain="[('create_date', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01 00:00:00')), ('create_date', '&lt;', context_today().strftime('%Y-%m-01 00:00:00'))]"/>
+                <filter string="Last 3 Months" name="filter_last_3_months" domain="[('create_date', '&gt;=', (context_today() - relativedelta(months=3)).strftime('%Y-%m-01 00:00:00'))]"/>
+                <separator/>
+                
+                <filter string="This Year" name="filter_this_year" domain="[('create_date', '&gt;=', context_today().strftime('%Y-01-01 00:00:00'))]"/>
+                <separator/>
+
+                <filter string="Dynamic Dates Generator (Years/Months)" name="filter_dynamic_dates" date="create_date"/>
+                <separator/>
                 
                 <group expand="0" string="Approval Options">
                     <filter string="Approval Status" name="group_by_approval_status" context="{'group_by': 'approval_status'}"/>
