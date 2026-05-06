@@ -63,7 +63,8 @@
         <field name="model">crm.lead</field>
         <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
         <field name="arch" type="xml">
-            <xpath expr="//search" position="inside">
+            
+            <xpath expr="//search/group" position="before">
                 <separator/>
                 <filter string="Active Leads Only" name="filter_active_leads" domain="[('active', '=', True)]"/>
                 <separator/>
@@ -90,11 +91,10 @@
 
                 <filter string="Dynamic Dates Generator (Years/Months)" name="filter_dynamic_dates" date="create_date"/>
                 <separator/>
-                
-                <group expand="0" string="Approval Options">
-                    <filter string="Approval Status" name="group_by_approval_status" context="{'group_by': 'approval_status'}"/>
-                    <filter string="Creation Month" name="group_by_month" context="{'group_by': 'create_date:month'}"/>
-                </group>
+            </xpath>
+            
+            <xpath expr="//search/group" position="inside">
+                <filter string="Approval Status" name="group_by_approval_status" context="{'group_by': 'approval_status'}"/>
             </xpath>
         </field>
     </record>
