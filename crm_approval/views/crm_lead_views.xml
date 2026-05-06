@@ -59,14 +59,14 @@
     </record>
 
     <record id="view_crm_lead_search_inherited_approval" model="ir.ui.view">
-        <field name="name">crm.lead.search.inherited.approval</field>
+        <field name="name">crm.opportunity.search.inherited.approval</field>
         <field name="model">crm.lead</field>
-        <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
+        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
         <field name="arch" type="xml">
             
             <xpath expr="//search/group" position="before">
                 <separator/>
-                <filter string="Active Leads Only" name="filter_active_leads" domain="[('active', '=', True)]"/>
+                <filter string="Active Opportunities Only" name="filter_active_leads" domain="[('active', '=', True)]"/>
                 <separator/>
                 
                 <filter string="Today" name="filter_today" domain="[('create_date', '&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')), ('create_date', '&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]"/>
