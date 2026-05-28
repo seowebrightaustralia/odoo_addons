@@ -5,7 +5,7 @@ class CrmLead(models.Model):
     _inherit = 'crm.lead'
 
     @api.model
-    def _read_group_stage_ids(self, stages, domain, order=None, **kwargs):
+    def _read_group_stage_ids(self, stages, domain, *args, **kwargs):
         # 1. Check Context (Catches standard search bar filters)
         ctx = self.env.context
         is_activity_filter = any(key in ctx for key in [
@@ -24,6 +24,5 @@ class CrmLead(models.Model):
             # ONLY return the stages that currently have data in them
             return stages
 
-        # 3. Safely call super, explicitly providing 'order' (even if None) 
-        # to completely prevent the "missing 1 required positional argument" error!
-        return super()._read_group_stage_ids(stages, domain, order)
+        # 3. Safely call super with EXACTLY what Odoo handed to us
+        return super()._read_group_stage_ids(stages, domain, *args, **kwargs)
