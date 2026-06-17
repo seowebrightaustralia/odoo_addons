@@ -8,9 +8,9 @@
             
             <xpath expr="//search" position="inside">
                 
-                <field name="sh_first_name" 
+                <field name="sh_firstname" 
                        string="Search First OR Last Name" 
-                       filter_domain="['|', ('sh_first_name', 'ilike', self), ('sh_last_name', 'ilike', self)]"/>
+                       filter_domain="['|', ('sh_firstname', 'ilike', self), ('sh_lastname', 'ilike', self)]"/>
                        
             </xpath>
             
