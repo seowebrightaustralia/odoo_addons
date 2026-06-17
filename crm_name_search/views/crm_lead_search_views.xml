@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
                 <field name="sh_firstname"
-                       string="Search First OR Last Name"
+                       string="Search First or Last Name"
                        filter_domain="['|', ('sh_firstname', 'ilike', self), ('sh_lastname', 'ilike', self)]"/>
             </xpath>
         </field>
