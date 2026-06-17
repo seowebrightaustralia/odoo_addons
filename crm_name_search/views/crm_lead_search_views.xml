@@ -1,19 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Leads pipeline search filter -->
     <record id="view_crm_lead_search_sh_names_new" model="ir.ui.view">
         <field name="name">crm.lead.search.sh.names.new</field>
         <field name="model">crm.lead</field>
         <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
         <field name="arch" type="xml">
-            
             <xpath expr="//search" position="inside">
-                
-                <field name="sh_firstname" 
-                       string="Search First OR Last Name" 
+                <field name="sh_firstname"
+                       string="Search First OR Last Name"
                        filter_domain="['|', ('sh_firstname', 'ilike', self), ('sh_lastname', 'ilike', self)]"/>
-                       
             </xpath>
-            
+        </field>
+    </record>
+
+    <!-- Opportunities pipeline search filter -->
+    <record id="view_crm_opportunity_search_sh_names" model="ir.ui.view">
+        <field name="name">crm.lead.search.opportunity.sh.names</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+        <field name="arch" type="xml">
+            <!-- Replace partner_id field to also search crm.lead sh_firstname/sh_lastname
+                 (covers leads with no linked partner). The partner_id ilike clause
+                 already benefits from the res.partner _rec_names_search override. -->
+            <xpath expr="//field[@name='partner_id']" position="replace">
+                <field name="partner_id" operator="child_of" string="Customer"
+                       filter_domain="['|', '|', '|', '|', '|',
+                           ('partner_id', 'ilike', self),
+                           ('partner_name', 'ilike', self),
+                           ('email_from', 'ilike', self),
+                           ('contact_name', 'ilike', self),
+                           ('sh_firstname', 'ilike', self),
+                           ('sh_lastname', 'ilike', self)]"/>
+            </xpath>
+            <xpath expr="//search" position="inside">
+                <field name="sh_firstname"
+                       string="Search First OR Last Name"
+                       filter_domain="['|', ('sh_firstname', 'ilike', self), ('sh_lastname', 'ilike', self)]"/>
+            </xpath>
         </field>
     </record>
 </odoo>
