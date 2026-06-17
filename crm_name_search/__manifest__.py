@@ -6,6 +6,7 @@
     'author': 'SEOWebright',
     'depends': [
         'crm',
+        'sh_first_last_name'  # <-- This is the crucial missing piece!
     ],
     'data': [
         'views/crm_lead_search_views.xml',
