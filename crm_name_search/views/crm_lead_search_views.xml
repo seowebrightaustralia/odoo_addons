@@ -32,8 +32,6 @@
                            ('contact_name', 'ilike', self),
                            ('sh_firstname', 'ilike', self),
                            ('sh_lastname', 'ilike', self)]"/>
-            </xpath>
-            <xpath expr="//search" position="inside">
                 <field name="sh_firstname"
                        string="Search First OR Last Name"
                        filter_domain="['|', ('sh_firstname', 'ilike', self), ('sh_lastname', 'ilike', self)]"/>
