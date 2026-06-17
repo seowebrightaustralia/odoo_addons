@@ -7,9 +7,7 @@
         <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
-                <field name="sh_firstname"
-                       string="Search First or Last Name"
-                       filter_domain="['|', ('sh_firstname', 'ilike', self), ('sh_lastname', 'ilike', self)]"/>
+                <field name="sh_full_name_search" string="Search First or Last Name"/>
             </xpath>
         </field>
     </record>
@@ -32,9 +30,7 @@
                            ('contact_name', 'ilike', self),
                            ('sh_firstname', 'ilike', self),
                            ('sh_lastname', 'ilike', self)]"/>
-                <field name="sh_firstname"
-                       string="Search First or Last Name"
-                       filter_domain="['|', ('sh_firstname', 'ilike', self), ('sh_lastname', 'ilike', self)]"/>
+                <field name="sh_full_name_search" string="Search First or Last Name"/>
             </xpath>
         </field>
     </record>
