@@ -6,15 +6,12 @@
         <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
         <field name="arch" type="xml">
             
-            <!-- Finds the Customer search field and adds your custom options right below it -->
-            <xpath expr="//field[@name='partner_id']" position="after">
+            <xpath expr="//search" position="inside">
                 
-                <!-- Adds "Search First Name for: " -->
                 <field name="partner_id" 
                        string="First Name" 
                        filter_domain="[('partner_id.sh_firstname', 'ilike', self)]"/>
                        
-                <!-- Adds "Search Last Name for: " -->
                 <field name="partner_id" 
                        string="Last Name" 
                        filter_domain="[('partner_id.sh_lastname', 'ilike', self)]"/>
