@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_res_partner_search_sh_names" model="ir.ui.view">
+        <field name="name">res.partner.search.sh.names</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="sh_full_name_search" string="Search First or Last Name"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
