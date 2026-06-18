@@ -11,15 +11,14 @@
                  finds leads by any of these fields automatically. -->
             <xpath expr="//field[@name='name']" position="replace">
                 <field name="name"
-                       filter_domain="['|', '|', '|', '|', '|', '|', '|',
+                       filter_domain="['|', '|', '|', '|', '|', '|',
                            ('name', 'ilike', self),
                            ('partner_name', 'ilike', self),
                            ('partner_id.name', 'ilike', self),
                            ('sh_firstname', 'ilike', self),
                            ('sh_lastname', 'ilike', self),
                            ('description', 'ilike', self),
-                           ('message_ids.body', 'ilike', self),
-                           ('product_line_ids.name', 'ilike', self)]"/>
+                           ('message_ids.body', 'ilike', self)]"/>
             </xpath>
             <xpath expr="//search" position="inside">
                 <field name="sh_full_name_search" string="Search First or Last Name"/>
@@ -38,15 +37,14 @@
             <!-- Broaden the default "Search for: X" (name field). -->
             <xpath expr="//field[@name='name']" position="replace">
                 <field name="name"
-                       filter_domain="['|', '|', '|', '|', '|', '|', '|',
+                       filter_domain="['|', '|', '|', '|', '|', '|',
                            ('name', 'ilike', self),
                            ('partner_name', 'ilike', self),
                            ('partner_id.name', 'ilike', self),
                            ('sh_firstname', 'ilike', self),
                            ('sh_lastname', 'ilike', self),
                            ('description', 'ilike', self),
-                           ('message_ids.body', 'ilike', self),
-                           ('product_line_ids.name', 'ilike', self)]"/>
+                           ('message_ids.body', 'ilike', self)]"/>
             </xpath>
             <!-- Replace partner_id to add sh_firstname/sh_lastname branches
                  covering leads with no linked partner, and place

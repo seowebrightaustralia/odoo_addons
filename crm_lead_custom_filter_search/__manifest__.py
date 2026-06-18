@@ -8,7 +8,6 @@
         'crm',
         'contacts',
         'sh_first_last_name',
-        'crm_lead_products_quoted',
     ],
     'data': [
         'views/res_partner_search_views.xml',
