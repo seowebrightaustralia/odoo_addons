@@ -15,10 +15,23 @@ class CrmLead(models.Model):
         search='_search_sh_full_name',
         store=False,
     )
+    # Virtual Char field so the search view gets a safe Char widget instead of
+    # the Html widget (description) which has no search widget in Odoo v18 and
+    # causes CrmKanbanArchParser to crash with "Cannot read properties of undefined".
+    sh_notes_search = fields.Char(
+        string='Notes & Messages',
+        compute='_compute_sh_notes_search',
+        search='_search_sh_notes',
+        store=False,
+    )
 
     def _compute_sh_full_name_search(self):
         for rec in self:
             rec.sh_full_name_search = ' '.join(filter(None, [rec.sh_firstname, rec.sh_lastname]))
+
+    def _compute_sh_notes_search(self):
+        for rec in self:
+            rec.sh_notes_search = ''
 
     def _search_sh_full_name(self, operator, value):
         if operator in ('ilike', 'like', '=ilike', '=like') and value and ' ' in value:
@@ -34,6 +47,9 @@ class CrmLead(models.Model):
                 ]),
             ])
         return ['|', ('sh_firstname', operator, value), ('sh_lastname', operator, value)]
+
+    def _search_sh_notes(self, operator, value):
+        return ['|', ('description', operator, value), ('message_ids.body', operator, value)]
 
     @api.model
     def _search_display_name(self, operator, value):
