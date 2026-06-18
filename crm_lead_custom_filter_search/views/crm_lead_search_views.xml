@@ -22,8 +22,7 @@
             </xpath>
             <xpath expr="//search" position="inside">
                 <field name="sh_full_name_search" string="Search First or Last Name"/>
-                <field name="description" string="Search Notes &amp; Messages"
-                       filter_domain="['|', ('description', 'ilike', self), ('message_ids.body', 'ilike', self)]"/>
+                <field name="sh_notes_search" string="Search Notes &amp; Messages"/>
             </xpath>
         </field>
     </record>
@@ -59,8 +58,7 @@
                            ('sh_firstname', 'ilike', self),
                            ('sh_lastname', 'ilike', self)]"/>
                 <field name="sh_full_name_search" string="Search First or Last Name"/>
-                <field name="description" string="Search Notes &amp; Messages"
-                       filter_domain="['|', ('description', 'ilike', self), ('message_ids.body', 'ilike', self)]"/>
+                <field name="sh_notes_search" string="Search Notes &amp; Messages"/>
             </xpath>
         </field>
     </record>
