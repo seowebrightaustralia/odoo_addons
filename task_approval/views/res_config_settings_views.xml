@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_project_approvals" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.project.approvals</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="project.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='project']" position="inside">
+                <block title="Task Approvals" name="task_approvals_setting_container">
+                    <setting help="Select the tags used for the task approval workflow.">
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label for="task_pending_tag_id" class="col-lg-3 o_light_label" string="Pending Tag"/>
+                                <field name="task_pending_tag_id" context="{'project_id': False}"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="task_approved_tag_id" class="col-lg-3 o_light_label" string="Approved Tag"/>
+                                <field name="task_approved_tag_id" context="{'project_id': False}"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="task_declined_tag_id" class="col-lg-3 o_light_label" string="Declined Tag"/>
+                                <field name="task_declined_tag_id" context="{'project_id': False}"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="task_on_hold_tag_id" class="col-lg-3 o_light_label" string="On-Hold Tag"/>
+                                <field name="task_on_hold_tag_id" context="{'project_id': False}"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

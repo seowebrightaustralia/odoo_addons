@@ -1,0 +1,49 @@
+// webright_global_search — dialog styles
+
+.wgs-search-bar {
+    .wgs-input:focus {
+        box-shadow: none;
+        border-color: var(--o-brand-primary, #714b67);
+    }
+}
+
+.wgs-results {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.wgs-group-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--o-brand-primary, #714b67);
+    padding: 0.6rem 0.75rem 0.2rem;
+}
+
+.wgs-result-item {
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.1s;
+
+    &:hover {
+        background: var(--o-brand-lightest, #f5eef8);
+    }
+
+    .wgs-result-name {
+        font-size: 0.9rem;
+    }
+
+    .wgs-result-id {
+        font-size: 0.75rem;
+    }
+}
+
+.wgs-status,
+.wgs-hint {
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

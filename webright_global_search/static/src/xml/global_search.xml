@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="webright_global_search.GlobalSearchDialog">
+        <Dialog title="'Webright Global Search'" size="'md'">
+            <div class="wgs-search-bar input-group mb-3">
+                <span class="input-group-text bg-white">
+                    <i class="fa fa-search text-muted"/>
+                </span>
+                <input
+                    type="text"
+                    class="form-control wgs-input border-start-0"
+                    placeholder="Search  e.g. Jicko, INV-11942, Cam"
+                    t-ref="searchInput"
+                    t-on-input="onSearchInput"
+                    autocomplete="off"
+                />
+            </div>
+            
+            <div class="wgs-filters d-flex gap-2 mb-3 px-1 align-items-center">
+                <span class="text-muted small fw-bold me-1">Creation Date:</span>
+                <select class="form-select form-select-sm w-auto" t-model="state.dateFilter" t-on-change="onFilterChange">
+                    <option value="all">All Time</option>
+                    <optgroup label="Months">
+                        <t t-foreach="monthOptions" t-as="opt" t-key="opt.value">
+                            <option t-att-value="opt.value" t-esc="opt.label"/>
+                        </t>
+                    </optgroup>
+                    <optgroup label="Quarters">
+                        <t t-foreach="quarterOptions" t-as="opt" t-key="opt.value">
+                            <option t-att-value="opt.value" t-esc="opt.label"/>
+                        </t>
+                    </optgroup>
+                    <optgroup label="Years">
+                        <t t-foreach="yearOptions" t-as="opt" t-key="opt.value">
+                            <option t-att-value="opt.value" t-esc="opt.label"/>
+                        </t>
+                    </optgroup>
+                    <option value="custom">Custom Range</option>
+                </select>
+                <input t-if="state.dateFilter === 'custom'" type="date" name="dateFrom" class="form-control form-control-sm w-auto" t-model="state.dateFrom" t-on-change="onFilterChange"/>
+                <span t-if="state.dateFilter === 'custom'" class="text-muted small">to</span>
+                <input t-if="state.dateFilter === 'custom'" type="date" name="dateTo" class="form-control form-control-sm w-auto" t-model="state.dateTo" t-on-change="onFilterChange"/>
+            </div>
+
+            <div t-if="state.loading" class="wgs-status text-muted text-center py-4">
+                <i class="fa fa-spinner fa-spin me-2"/>Searching
+            </div>
+            <div t-elif="state.errorMsg" class="wgs-status text-danger text-center py-4">
+                <i class="fa fa-exclamation-triangle me-2"/>
+                <span t-esc="state.errorMsg"/>
+            </div>
+            <div t-elif="state.searched and !state.errorMsg and groupedResults.length === 0" class="wgs-status text-muted text-center py-4">
+                No results for "<strong t-esc="state.query"/>".
+            </div>
+            <div t-elif="groupedResults.length > 0" class="wgs-results">
+                <t t-foreach="groupedResults" t-as="group" t-key="group.label">
+                    <div class="wgs-group-label" t-esc="group.label"/>
+                    <t t-foreach="group.items" t-as="result" t-key="result.id">
+                        <div class="wgs-result-item d-flex align-items-center justify-content-between px-3 py-2"
+                             t-on-click="() => this.openRecord(result)">
+                            <span class="wgs-result-name text-truncate flex-grow-1" t-esc="result.name"/>
+                            <small class="text-muted ms-3 flex-shrink-0">#<t t-esc="result.id"/></small>
+                        </div>
+                    </t>
+                </t>
+            </div>
+            <div t-else="" class="wgs-hint text-muted text-center py-4 small">
+                Search across Contacts, Tickets, Tasks, Orders, Invoices, Products, and more.<br/>
+                <span class="mt-2 d-inline-block">Also available: <kbd>Ctrl+K</kbd> then type <code>+</code></span>
+            </div>
+        </Dialog>
+    </t>
+</templates>
