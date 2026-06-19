@@ -22,6 +22,17 @@ class CrmLead(models.Model):
             rec.sh_products_search = ''
 
     def _search_sh_products(self, operator, value):
-        # product_line_ids.name is non-stored (store=False), so traverse to the
-        # stored field directly instead of relying on SQL column resolution.
-        return [('product_line_ids.product_id.name', operator, value)]
+        get = self.env['ir.config_parameter'].sudo().get_param
+        products_on = get('crm_search.products', '1') != '0'
+        categ_on = get('crm_search.product_categ', '0') != '0'
+        parts = []
+        if products_on:
+            # product_line_ids.name is non-stored — traverse to stored field.
+            parts.append(('product_line_ids.product_id.name', operator, value))
+        if categ_on:
+            parts.append(('product_line_ids.product_id.public_categ_ids.display_name', operator, value))
+        if not parts:
+            return [('id', '=', False)]
+        if len(parts) == 1:
+            return [parts[0]]
+        return ['|'] + [list(p) for p in parts]

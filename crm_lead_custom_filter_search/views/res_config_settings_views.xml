@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_crm_search" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.crm.search</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="crm.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='crm']" position="inside">
+                <block title="Lead Search Fields" name="crm_search_fields">
+                    <setting string="Partner Name"
+                             help="Include partner name in the broad Enter-key search">
+                        <field name="crm_search_partner_name"/>
+                    </setting>
+                    <setting string="Company Name"
+                             help="Include linked company name (partner_id.name)">
+                        <field name="crm_search_partner_id_name"/>
+                    </setting>
+                    <setting string="Email"
+                             help="Include email address in the broad search">
+                        <field name="crm_search_email_from"/>
+                    </setting>
+                    <setting string="Contact Name"
+                             help="Include contact_name field in the broad search">
+                        <field name="crm_search_contact_name"/>
+                    </setting>
+                    <setting string="First / Last Name"
+                             help="Include sh_firstname and sh_lastname (sh_first_last_name module)">
+                        <field name="crm_search_sh_names"/>
+                    </setting>
+                    <setting string="Internal Notes"
+                             help="Include the Internal Notes (description) field">
+                        <field name="crm_search_notes"/>
+                    </setting>
+                    <setting string="Chatter Messages"
+                             help="Include chatter message bodies — can be slow on large databases">
+                        <field name="crm_search_messages"/>
+                    </setting>
+                    <setting string="Products Quoted — Product Name"
+                             help="Search leads by product name in the Products Quoted tab">
+                        <field name="crm_search_products"/>
+                    </setting>
+                    <setting string="Products Quoted — Ecommerce Category"
+                             help="Search leads by ecommerce category (public_categ_ids) of quoted products">
+                        <field name="crm_search_product_categ"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>
