@@ -8,6 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
                 <field name="sh_products_search" string="Products Quoted"/>
+                <field name="sh_product_categ_search" string="Products Quoted — Category"/>
             </xpath>
         </field>
     </record>
@@ -19,6 +20,7 @@
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
                 <field name="sh_products_search" string="Products Quoted"/>
+                <field name="sh_product_categ_search" string="Products Quoted — Category"/>
             </xpath>
         </field>
     </record>
