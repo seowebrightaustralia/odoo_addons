@@ -7,11 +7,13 @@
     'depends': [
         'crm',
         'contacts',
+        'base_setup',
         'sh_first_last_name',
     ],
     'data': [
         'views/res_partner_search_views.xml',
         'views/crm_lead_search_views.xml',
+        'views/res_config_settings_views.xml',
     ],
     'installable': True,
     'application': False,

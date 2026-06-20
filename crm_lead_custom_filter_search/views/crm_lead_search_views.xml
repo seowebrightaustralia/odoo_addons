@@ -6,19 +6,11 @@
         <field name="model">crm.lead</field>
         <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
         <field name="arch" type="xml">
-            <!-- Broaden the default "Search for: X" (name field) to also match
-                 partner name, sh_firstname, and sh_lastname so pressing Enter
-                 finds leads by any of these fields automatically. -->
+            <!-- Replace 'name' with virtual sh_lead_search so pressing Enter calls
+                 _search_sh_lead (settings-aware Python method) instead of the
+                 default direct SQL ('name', 'ilike', value) clause. -->
             <xpath expr="//field[@name='name']" position="replace">
-                <field name="name"
-                       filter_domain="['|', '|', '|', '|', '|', '|',
-                           ('name', 'ilike', self),
-                           ('partner_name', 'ilike', self),
-                           ('partner_id.name', 'ilike', self),
-                           ('sh_firstname', 'ilike', self),
-                           ('sh_lastname', 'ilike', self),
-                           ('description', 'ilike', self),
-                           ('message_ids.body', 'ilike', self)]"/>
+                <field name="sh_lead_search" string="Search All Fields"/>
             </xpath>
             <xpath expr="//search" position="inside">
                 <field name="sh_full_name_search" string="Search First or Last Name"/>
@@ -33,21 +25,9 @@
         <field name="model">crm.lead</field>
         <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
         <field name="arch" type="xml">
-            <!-- Broaden the default "Search for: X" (name field). -->
             <xpath expr="//field[@name='name']" position="replace">
-                <field name="name"
-                       filter_domain="['|', '|', '|', '|', '|', '|',
-                           ('name', 'ilike', self),
-                           ('partner_name', 'ilike', self),
-                           ('partner_id.name', 'ilike', self),
-                           ('sh_firstname', 'ilike', self),
-                           ('sh_lastname', 'ilike', self),
-                           ('description', 'ilike', self),
-                           ('message_ids.body', 'ilike', self)]"/>
+                <field name="sh_lead_search" string="Search All Fields"/>
             </xpath>
-            <!-- Replace partner_id to add sh_firstname/sh_lastname branches
-                 covering leads with no linked partner, and place
-                 sh_full_name_search right after for explicit name search. -->
             <xpath expr="//field[@name='partner_id']" position="replace">
                 <field name="partner_id" operator="child_of" string="Customer"
                        filter_domain="['|', '|', '|', '|', '|',
